@@ -29,6 +29,7 @@ dependencies:
   dio_intercept_to_curl: ^0.2.0
   json_annotation: ^4.9.0
   toastification: ^3.0.1
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

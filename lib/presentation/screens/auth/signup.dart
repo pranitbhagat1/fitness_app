@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fitness/constants/meta_strings.dart';
+import 'package:fitness/data/data_sources/remote/add_fitness_trainer.dart';
 import 'package:fitness/data/data_sources/remote/add_gym.dart';
 import 'package:fitness/presentation/routes/routes.dart';
 import 'package:fitness/presentation/theme/app_colors.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
 
 class Signup extends StatefulWidget {
@@ -144,6 +146,7 @@ class _SignupState extends State<Signup> {
                               TextFormField(
                                 style: GoogleFonts.poppins(fontSize: 12),
                                 cursorColor: Colors.black,
+                                controller: gymNameController,
                                 decoration: InputDecoration(
                                     enabled: true,
                                     filled: true,
@@ -163,6 +166,7 @@ class _SignupState extends State<Signup> {
                               TextFormField(
                                 style: GoogleFonts.poppins(fontSize: 12),
                                 cursorColor: Colors.black,
+                                controller: ownerNameController,
                                 decoration: InputDecoration(
                                   suffixIconColor: Colors.black,
                                   enabled: true,
@@ -186,6 +190,7 @@ class _SignupState extends State<Signup> {
                                 controller: gymTypeController,
                                 readOnly: true,
                                 cursorColor: Colors.black,
+                                onTap: () => showGymType(context),
                                 decoration: InputDecoration(
                                   suffixIcon: Icon(
                                     Icons.keyboard_arrow_down_sharp,
@@ -241,6 +246,7 @@ class _SignupState extends State<Signup> {
                                         controller: stateController,
                                         cursorColor: Colors.black,
                                         readOnly: true,
+                                        onTap: () => showState("owner",context),
                                         decoration: InputDecoration(
                                           suffixIcon: Icon(
                                             Icons.keyboard_arrow_down_sharp,
@@ -367,6 +373,7 @@ class _SignupState extends State<Signup> {
                                             controller: openTimeController,
                                             cursorColor: Colors.black,
                                             readOnly: true,
+                                            onTap: () => showTime("open",context),
                                             decoration: InputDecoration(
                                               suffixIcon: Icon(
                                                 Icons.timer_sharp,
@@ -399,6 +406,7 @@ class _SignupState extends State<Signup> {
                                             controller: closeTimeController,
                                             cursorColor: Colors.black,
                                             readOnly: true,
+                                            onTap: () => showTime("close",context),
                                             decoration: InputDecoration(
                                               suffixIcon: Icon(
                                                 Icons.timer_sharp,
@@ -421,12 +429,43 @@ class _SignupState extends State<Signup> {
                               ),
                               Gap(10),
 
+
+                              Text(
+                                "Password",
+                                style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
+                              ),
+                              TextFormField(
+                                style: GoogleFonts.poppins(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                controller: passwordController,
+                                obscureText: true,
+                                obscuringCharacter: "*",
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  // suffixIcon: Icon(
+                                  //   Icons.remove_red_eye_outlined,
+                                  //   color: Colors.black,
+                                  //   size: 15,
+                                  // ),
+                                  // suffixIconColor: Colors.black,
+                                  enabled: true,
+                                  filled: true,
+                                  fillColor: Colors.transparent,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                ),
+                              ),
+                              Gap(10),
+
                               Gap(15),
                               Container(
                                 width: double.infinity,
                                 padding: EdgeInsets.symmetric(horizontal: 25),
                                 child: MaterialButton(
                                   onPressed: () {
+                                    FocusScope.of(context).unfocus();
                                     signUpOwner(context);
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 5),
@@ -538,6 +577,7 @@ class _SignupState extends State<Signup> {
                                     style: GoogleFonts.poppins(fontSize: 12),
                                     cursorColor: Colors.black,
                                     readOnly: true,
+                                    onTap: () => showDate(context),
                                     decoration: InputDecoration(
                                       suffixIcon: Icon(
                                         Icons.calendar_month_rounded,
@@ -564,6 +604,7 @@ class _SignupState extends State<Signup> {
                                   TextFormField(
                                     style: GoogleFonts.poppins(fontSize: 12),
                                     maxLines: 3,
+                                    controller: ftAddressController,
                                     cursorColor: Colors.black,
                                     decoration: InputDecoration(
                                       enabled: true,
@@ -594,6 +635,8 @@ class _SignupState extends State<Signup> {
                                             style: GoogleFonts.poppins(fontSize: 12),
                                             cursorColor: Colors.black,
                                             readOnly: true,
+                                            controller: ftStateController,
+                                            onTap: () => showState("trainer",context),
                                             decoration: InputDecoration(
                                               suffixIcon: Icon(
                                                 Icons.keyboard_arrow_down_sharp,
@@ -624,6 +667,7 @@ class _SignupState extends State<Signup> {
                                           TextFormField(
                                             style: GoogleFonts.poppins(fontSize: 12),
                                             cursorColor: Colors.black,
+                                            controller: ftCityController,
                                             decoration: InputDecoration(
                                               enabled: true,
                                               filled: true,
@@ -640,12 +684,34 @@ class _SignupState extends State<Signup> {
                                   ),
                                   Gap(10),
 
+                                  Text(
+                                    "Pincode",
+                                    style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
+                                  ),
+                                  TextFormField(
+                                    style: GoogleFonts.poppins(fontSize: 12),
+                                    keyboardType: TextInputType.number,
+                                    controller: ftPincodeController,
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                      enabled: true,
+                                      filled: true,
+                                      fillColor: Colors.transparent,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.black),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                    ),
+                                  ),
+                                  Gap(10),
+
                                   /// pincode
                                   Text(
                                     "Email",
                                     style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
                                   ),
                                   TextFormField(
+                                    controller: ftEmailController,
                                     style: GoogleFonts.poppins(fontSize: 12),
                                     keyboardType: TextInputType.emailAddress,
                                     cursorColor: Colors.black,
@@ -666,6 +732,7 @@ class _SignupState extends State<Signup> {
                                     style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
                                   ),
                                   TextFormField(
+                                    controller: ftPhoneController,
                                     style: GoogleFonts.poppins(fontSize: 12),
                                     keyboardType: TextInputType.phone,
                                     cursorColor: Colors.black,
@@ -687,10 +754,40 @@ class _SignupState extends State<Signup> {
                                     style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
                                   ),
                                   TextFormField(
+                                    controller: ftExperienceController,
                                     style: GoogleFonts.poppins(fontSize: 12),
                                     keyboardType: TextInputType.phone,
                                     cursorColor: Colors.black,
                                     decoration: InputDecoration(
+                                      enabled: true,
+                                      filled: true,
+                                      fillColor: Colors.transparent,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.black),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                                    ),
+                                  ),
+                                  Gap(10),
+
+                                  Text(
+                                    "Password",
+                                    style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600),
+                                  ),
+                                  TextFormField(
+                                    style: GoogleFonts.poppins(fontSize: 12),
+                                    keyboardType: TextInputType.text,
+                                    controller: ftPasswordController,
+                                    obscureText: true,
+                                    obscuringCharacter: "*",
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                      // suffixIcon: Icon(
+                                      //   Icons.remove_red_eye_outlined,
+                                      //   color: Colors.black,
+                                      //   size: 15,
+                                      // ),
+                                      // suffixIconColor: Colors.black,
                                       enabled: true,
                                       filled: true,
                                       fillColor: Colors.transparent,
@@ -707,7 +804,7 @@ class _SignupState extends State<Signup> {
                                     padding: EdgeInsets.symmetric(horizontal: 25),
                                     child: MaterialButton(
                                       onPressed: () {
-                                        debugPrint("23234");
+                                        signUpTrainer(context);
                                       },
                                       padding: EdgeInsets.symmetric(vertical: 5),
                                       color: AppColors.bluePrimaryShades[800],
@@ -787,10 +884,6 @@ class _SignupState extends State<Signup> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      // constraints: BoxConstraints(
-      //   minHeight: MediaQuery.of(context).size.height * 0.15,
-      //   maxHeight: MediaQuery.of(context).size.height * 0.85,
-      // ),
       builder: (context) => SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(15),
@@ -828,13 +921,16 @@ class _SignupState extends State<Signup> {
       var responseJson = await callGymSignup(emailController.text, passwordController.text, contactController.text, ownerNameController.text, gymNameController.text, gymTypeController.text, addressController.text, stateController.text,
           cityController.text, pincodeController.text, openTimeController.text, closeTimeController.text, "1");
       var code = responseJson["code"];
+      debugPrint(responseJson["message"]);
       if (code == 200) {
+        GoRouter.of(context).pop();
         GoRouter.of(context).pop();
         toastification.show(
             context: context,
-            title: responseJson["message"],
+            title: Text(responseJson["message"]),
+            closeOnClick: false,
             type: ToastificationType.error,
-            animationDuration: Duration(seconds: 3),
+            autoCloseDuration: Duration(seconds: 3),
             showIcon: true,
             closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
             icon: Icon(
@@ -846,10 +942,10 @@ class _SignupState extends State<Signup> {
         Navigator.pop(context);
         toastification.show(
             context: context,
-            title: responseJson["message"],
+            title: Text(responseJson["message"]),
             type: ToastificationType.error,
             closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
-            animationDuration: Duration(seconds: 3),
+            autoCloseDuration: Duration(seconds: 3),
             showIcon: true,
             icon: Icon(
               Icons.error,
@@ -863,10 +959,210 @@ class _SignupState extends State<Signup> {
         title: Text("No internet connection"),
         type: ToastificationType.error,
         closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
-        animationDuration: Duration(seconds: 3),
+        autoCloseDuration: Duration(seconds: 3),
         showIcon: true,
         icon: const Icon(Icons.wifi_off, color: Colors.red),
       );
+    }
+  }
+
+  void signUpTrainer(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) => Center(child: CircularProgressIndicator(),),
+        barrierDismissible: false);
+
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi)) {
+      var responseJson = await callTrainerSignup(
+          ftEmailController.text,
+          ftPasswordController.text,
+          ftPhoneController.text,
+          fNameController.text,
+          lNameController.text,
+          ftGenderController.text,
+          ftDOBController.text,
+          ftAddressController.text,
+          ftStateController.text,
+          ftCityController.text,
+          ftPincodeController.text,
+          ftExperienceController.text,);
+      var code = responseJson["code"];
+      if (code == 200) {
+        GoRouter.of(context).pop();
+        GoRouter.of(context).pop();
+        toastification.show(
+            context: context,
+            title: Text(responseJson["message"]),
+            type: ToastificationType.error,
+            autoCloseDuration: Duration(seconds: 3),
+            showIcon: true,
+            closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
+            icon: Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            ),
+            alignment: Alignment.bottomCenter);
+      } else {
+        Navigator.pop(context);
+        toastification.show(
+            context: context,
+            title: Text(responseJson["message"]),
+            type: ToastificationType.error,
+            closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
+            autoCloseDuration: Duration(seconds: 3),
+            showIcon: true,
+            icon: Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            alignment: Alignment.bottomCenter);
+      }
+    } else {
+      toastification.show(
+        context: context,
+        title: Text("No internet connection"),
+        type: ToastificationType.error,
+        closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
+        autoCloseDuration: Duration(seconds: 3),
+        showIcon: true,
+        icon: const Icon(Icons.wifi_off, color: Colors.red),
+      );
+    }
+  }
+
+  String selectedState = "",selectedFTState="";
+  showState(String type, BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      backgroundColor: AppColors.primaryBlackBackground,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
+      ),
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              )),
+          child: ListView.separated(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if(type == "owner"){
+                        selectedState = stateController.text = indianState[index];
+                      } else {
+                        selectedFTState = ftStateController.text = indianState[index];
+                      }
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Container(width: double.infinity, padding: EdgeInsets.symmetric(vertical: 5), child: Text(indianState[index]))),
+              separatorBuilder: (context, index) => const Divider(),
+              itemCount: indianState.length),
+        ),
+      ),
+    );
+  }
+
+  String selectedGymType = "";
+  showGymType(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              )),
+          child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedGymType = gymTypeController.text = gymType[index];
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Container(width: double.infinity, padding: EdgeInsets.symmetric(vertical: 5), child: Text(gymType[index]))),
+              separatorBuilder: (context, index) => const Divider(),
+              itemCount: gymType.length),
+        ),
+      ),
+    );
+  }
+
+  String selectedTime="",selectedFtTime="";
+  String _formattedTime = "";
+  String formatTimeofDay(TimeOfDay time){
+    final now = DateTime.now();
+    final dt = DateTime(now.year,now.month,now.day,time.hour,time.minute);
+    final format = DateFormat.jm();
+    return format.format(dt);
+  }
+
+
+  showTime(String type, BuildContext context) {
+    showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.dialOnly,
+      builder: (context, child) {
+        final Widget mediaQueryWrapper = MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              alwaysUse24HourFormat: false
+            ),
+            child: child!
+        );
+
+        if(Localizations.localeOf(context).languageCode == 'es') {
+          return Localizations.override(
+            context: context,
+            locale: const Locale('es','US'),
+            child: mediaQueryWrapper,
+          );
+        }
+        return mediaQueryWrapper;
+      },
+    ).then((value) {
+      if(value != null) {
+        setState(() {
+          _formattedTime = formatTimeofDay(value);
+          if(type == "open"){
+            openTimeController.text = _formattedTime;
+          } else {
+            closeTimeController.text = _formattedTime;
+          }
+        });
+      }
+    },);
+  }
+
+  Future<void> showDate(BuildContext context)  async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        firstDate: DateTime(1950),
+        lastDate: DateTime.now(),
+    );
+
+    if(picked != null){
+      String formattedDate = "${picked.day}/${picked.month}/${picked.year}"; // Format to dd/MM/yyyy
+      ftDOBController.text = formattedDate;
+      setState(() {});
     }
   }
 }

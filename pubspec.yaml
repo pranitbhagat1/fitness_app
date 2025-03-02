@@ -17,6 +17,18 @@ dependencies:
   shared_preferences: ^2.3.2
   lottie: ^3.1.2
   gap: ^3.0.1
+  cached_network_image: ^3.4.1
+  connectivity_plus: ^6.0.5
+  dartz: ^0.10.1
+  dio: ^5.7.0
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.6
+  injectable: ^2.4.4
+  http: ^1.2.2
+  jwt_decoder: ^2.0.1
+  dio_intercept_to_curl: ^0.2.0
+  json_annotation: ^4.9.0
+  toastification: ^3.0.1
 
 dev_dependencies:
   flutter_test:

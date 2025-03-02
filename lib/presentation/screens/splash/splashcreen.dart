@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:fitness/data/data_sources/local/local_data.dart';
 import 'package:fitness/gen/assets.gen.dart';
 import 'package:fitness/presentation/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +25,29 @@ class _SplashcreenState extends State<Splashcreen> {
   @override
   void initState() {
     super.initState();
-    _initPrefsAndStartNavigation();
+    startTimeout(3000);
   }
 
-  Future<void> _initPrefsAndStartNavigation() async {
-    await _initPrefs();
-    _startNavigationTimer();
+  startTimeout([int? milliseconds]) {
+    var duration = Duration(seconds: 3);
+    return Timer(duration, handleTimeout);
   }
 
-  Future<void> _initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    isFirstLaunch = (prefs.getInt("initScreen") ?? 0) == 0;
+  void handleTimeout() async {
+    Future<String> id = PreferenceManager().getUserId();
+    id.then(
+      (value) {
+        if (value == "") {
+          GoRouter.of(context).go(Routes.login);
+        } else {
+          GoRouter.of(context).go(Routes.homeOwner);
+        }
+      },
+    );
   }
 
   void _startNavigationTimer() {
-    Future.delayed(Duration(milliseconds: 4000), () {
+    Future.delayed(Duration(milliseconds: 3000), () {
       if (mounted) {
         // context.read<AuthCubit>().getToken();
         GoRouter.of(context).go(Routes.login);
@@ -55,11 +66,8 @@ class _SplashcreenState extends State<Splashcreen> {
             Lottie.asset(Assets.json.manLiftingBarbell),
             Gap(20),
             Text(
-                "FIT CONNECT",
-              style: GoogleFonts.poppins(
-                fontSize: 35,
-                fontWeight: FontWeight.w700
-              ),
+              "FIT CONNECT",
+              style: GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
             )
           ],
         ),

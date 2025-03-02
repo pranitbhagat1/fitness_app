@@ -6,6 +6,8 @@ class Routes{
 
   //AUTH routes
   static const String login = Paths.login;
+  static const String logout = Paths.logout;
+
   static const String preSignup = Paths.preSignup;
   static const String signup = Paths.signup;
 
@@ -41,6 +43,8 @@ abstract class Paths{
 
   // auth
   static const String login = '/login';
+  static const String logout = '/logout';
+
   static const String preSignup = '/preSignup';
   static const String signup = '/signup';
 

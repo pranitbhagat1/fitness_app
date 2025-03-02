@@ -1,5 +1,5 @@
 class ApiConstants{
-   static const String baseURL = "jp5moneytrade.com/fc/api_handler";
+   static const String baseURL = "http://jp5moneytrade.com/fc/index.php/api_handler";
 
    static const String login = "/login";
 

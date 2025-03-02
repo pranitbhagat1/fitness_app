@@ -30,6 +30,12 @@ class RouteGenerator {
         builder: (context, state) => Login(),
       ),
 
+      // login
+      GoRoute(
+        path: Routes.logout,
+        builder: (context, state) => Login(),
+      ),
+
       // signup
       GoRoute(
         path: Routes.signup,
